@@ -30,6 +30,7 @@ By the end of this assignment, you should be able to:
 ---
 
 ## Folder Structure
+```text
 project_root/
 │
 ├─ data/
@@ -52,7 +53,7 @@ project_root/
 │
 ├─ analysis_preview.md
 └─ README.md
-
+```
 
 ## AI Usage
 
