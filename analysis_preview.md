@@ -30,3 +30,44 @@ We created this variable to allow proportion-based tests and to quantify the pre
   - Daily outcomes (`event_day`)
   - Weather variables (`temp_max`, `precipitation`)
   - Binary indicators (`rainy_day`, `is_weekend`, `wildfire_count > 0`)
+
+## Gold dataset has:
+
+1. Continuous Metric
+
+- These are numeric variables we can average or run t-tests on:
+
+  - temp_max
+  - temp_min
+  - precipitation
+  - event_count
+  - wildfire_count
+  - storm_count
+
+**Example:**
+
+- “I can use precipitation as a continuous variable to compare average rainfall between event and non-event days.”
+
+2. Binary Variable
+
+- These are Binary Variables :
+
+  - event_day → 0 or 1
+  - rainy_day → 0 or 1
+  - is_weekend → 0 or 1
+
+**Example:**
+
+- “event_day is a binary variable indicating whether any natural event occurred.”
+
+3. Grouping Variable
+
+- These define groups for comparison:
+
+  - rainy_day → rainy vs non-rainy
+  - is_weekend → weekend vs weekday
+
+
+**Example:**
+
+- “I can use rainy_day as a grouping variable to compare event occurrence between rainy and non-rainy days.”

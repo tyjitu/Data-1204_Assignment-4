@@ -88,25 +88,36 @@ How do temperature and precipitation relate to event frequency?
 1. **Clone the repository:**
 
 git clone <repo-url>
+
 cd <repo-name>
 
 2. **Create a virtual environment:**
+
 uv init
+
 uv venv
+
 .\.venv\Scripts\Activate.ps1      # Windows
 
 3. **Install dependencies:**
+
 uv add jupyterlab
+
 uv add pandas numpy scipy statsmodels
 
 4. **Run ingestion scripts (Bronze layer):**
+
 python ingest/nasa_eonet_ingest.py
+
 python ingest/open_meteo_ingest.py
 
 5. **Run transformation scripts (Silver layer):**
+
 python transform/nasa_eonet_transform.py
+
 python transform/open_meteo_transform.py
 
 6. **Build Gold dataset:**
+
 python transform/gold_nasa_weather.py
 
