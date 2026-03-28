@@ -34,22 +34,26 @@ By the end of this assignment, you should be able to:
 project_root/
 │
 ├─ data/
-│ ├─ bronze/ # Raw API responses
-│ │ ├─ nasa_eonet/
-│ │ └─ open_meteo/
-│ ├─ silver/ # Cleaned datasets
-│ │ ├─ nasa_eonet/
-│ │ └─ open_meteo/
-│ └─ gold/ # Analysis-ready combined dataset
+│   ├─ bronze/        # Raw API responses
+│   │   ├─ nasa_eonet/
+│   │   └─ open_meteo/
+│   ├─ silver/        # Cleaned datasets
+│   │   ├─ nasa_eonet/
+│   │   └─ open_meteo/
+│   └─ gold/          # Analysis-ready combined dataset
 │
-├─ ingest/ # API ingestion scripts
-│ ├─ nasa_eonet_ingest.py
-│ └─ open_meteo_ingest.py
+├─ ingest/            # API ingestion scripts
+│   ├─ nasa_eonet_ingest.py
+│   └─ open_meteo_ingest.py
 │
-├─ transform/ # Transformation scripts
-│ ├─ nasa_eonet_transform.py
-│ ├─ open_meteo_transform.py
-│ └─ gold_nasa_weather.py
+├─ transform/         # Transformation scripts
+│   ├─ nasa_eonet_transform.py
+│   ├─ open_meteo_transform.py
+│   └─ gold_nasa_weather.py
+│
+├─ notebooks/         # Jupyter notebooks for exploration
+│   ├─ nasa_eonet.ipynb
+│   └─ open_meteo.ipynb
 │
 ├─ analysis_preview.md
 └─ README.md
