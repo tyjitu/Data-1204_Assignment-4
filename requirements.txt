@@ -1,0 +1,11 @@
+Demo Expectations
+
+1.	Intro
+2.	which APIs you chose and why
+3.	how your Bronze, Silver, and Gold layers are organized
+4.	one example of raw API data and how it was transformed
+5.	how you cleaned and joined the data
+6.	at least one derived feature you created for Part 2
+7.	one statistical question you may answer later
+8.	which statistical test you think may be appropriate, and why
+9.	one hardship, debugging issue, or design challenge your team faced
