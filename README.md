@@ -70,8 +70,9 @@ Transforming raw JSON into clean, analysis-ready Silver datasets.
 Planning the Gold dataset structure and derived variables.
 
 
-Example of verification/fix:
-While the AI suggested automatically loading the latest Bronze files, I verified the file paths and folder structures myself and adjusted the code to ensure it correctly handled missing files and timestamped filenames. Drafting the statistical analysis preview
+## Example of verification/fix:
+
+While AI helped generate parts of the ingestion and transformation code, I took responsibility for verifying that all joins and transformations were correct. I carefully checked that datasets were properly aligned on the date key and ensured that missing values were handled appropriately after joining. I also reviewed the transformation logic to confirm that features like event_count, rainy_day, and event_day were created correctly and made sense for analysis. This process ensured that I fully understood the pipeline and that the final Gold dataset is reliable and suitable for future statistical testing.
 
 ## Next Steps (Part 2)
 
