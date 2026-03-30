@@ -2,6 +2,10 @@ Demo Expectations
 
 1.	Intro
 2.	which APIs you chose and why
+API
+NASA EONET: Natural events metadata by date and category
+Open-Meteo Historical Weather: 	Daily weather for a city or region
+
 3.	how your Bronze, Silver, and Gold layers are organized
 4.	one example of raw API data and how it was transformed
 5.	how you cleaned and joined the data

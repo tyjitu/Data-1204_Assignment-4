@@ -27,6 +27,51 @@ By the end of this assignment, you should be able to:
 2. **Silver:** Flattened, cleaned, and structured CSVs with derived columns.  
 3. **Gold:** Analysis-ready table combining weather and event data, with derived binary variables and indicators for easy statistical testing.
 
+## Data Transformations
+
+### Bronze → Silver
+
+In this stage, raw API data is transformed into clean, structured datasets.
+
+For NASA EONET:
+- Parsed nested JSON into a flat structure  
+- Extracted event dates from geometry fields  
+- Converted timestamps into a standard `date` column  
+- Aggregated events by date to create:
+  - `event_count`
+  - `wildfire_count`
+  - `storm_count`  
+
+For Open-Meteo:
+- Extracted daily weather variables  
+- Converted date strings into proper date format  
+- Renamed columns for clarity (`temp_max`, `temp_min`, `precipitation`)  
+- Ensured correct data types (numeric and date)  
+- Handled missing values where necessary  
+
+---
+
+### Silver → Gold
+
+In this stage, cleaned datasets are combined and enhanced for analysis.
+
+- Joined NASA events and weather data on the `date` column  
+- Used an outer join to retain all dates  
+- Filled missing values (e.g., no events → 0)  
+- Created derived features for statistical analysis:
+  - `event_day` → whether any event occurred  
+  - `rainy_day` → whether precipitation exceeded a threshold  
+  - `is_weekend` → whether the date falls on a weekend  
+
+---
+
+### Purpose
+
+These transformations ensure that the final dataset is:
+- Clean and consistent  
+- Aligned at the daily level  
+- Ready for statistical testing and visualization in Part 2  
+
 ---
 
 ## Folder Structure
