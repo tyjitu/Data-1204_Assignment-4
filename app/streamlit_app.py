@@ -7,7 +7,7 @@ from scipy import stats
 
 
 st.set_page_config(
-    page_title="Assignment 4 Statistical Analysis App",
+    page_title="Statistical Analysis of Weather and Natural Events",
     page_icon="",
     layout="wide",
 )
@@ -115,7 +115,7 @@ def render_test_result(
 
 df = load_data()
 
-st.title("Assignment 4: Weather, Natural Events, and Holiday Context")
+st.title("Statistical Analysis of Weather and Natural Events")
 st.markdown(
     """
 This Streamlit app continues the Assignment 3 NASA EONET + Open-Meteo project by adding a
