@@ -88,6 +88,7 @@ def safe_levene(group_a: pd.Series, group_b: pd.Series) -> tuple[float, float]:
 
 def render_test_result(
     title: str,
+    analysis_question: str,
     hypotheses: list[str],
     stat_label: str,
     stat_value: float,
@@ -97,6 +98,7 @@ def render_test_result(
     extra_lines: list[str] | None = None,
 ) -> None:
     st.subheader(title)
+    st.write(f"Analysis question: {analysis_question}")
     for line in hypotheses:
         st.write(line)
     if extra_lines:
@@ -401,6 +403,7 @@ if analysis_choice == "One-sample t-test":
     with test_col:
         render_test_result(
             title="One-sample t-test: mean precipitation vs 0 mm",
+            analysis_question="Is the mean daily precipitation in the filtered sample different from 0 mm?",
             hypotheses=[
                 "Null hypothesis: The mean daily precipitation is 0 mm.",
                 "Alternative hypothesis: The mean daily precipitation is different from 0 mm.",
@@ -440,6 +443,7 @@ elif analysis_choice == "Two-sample t-test":
     with test_col:
         render_test_result(
             title="Welch two-sample t-test: precipitation on event vs non-event days",
+            analysis_question="Does mean precipitation differ between event days and non-event days?",
             hypotheses=[
                 "Null hypothesis: Mean precipitation is the same on event days and non-event days.",
                 "Alternative hypothesis: Mean precipitation differs between event days and non-event days.",
@@ -490,6 +494,7 @@ elif analysis_choice == "Chi-square test of independence":
             )
         render_test_result(
             title="Chi-square test: event day vs rainy-day status",
+            analysis_question="Is the occurrence of a natural event associated with whether a day is rainy?",
             hypotheses=[
                 "Null hypothesis: `event_day` is independent of `rainy_day`.",
                 "Alternative hypothesis: `event_day` and `rainy_day` are associated.",
@@ -542,6 +547,7 @@ elif analysis_choice == "Variance comparison":
     with test_col:
         render_test_result(
             title="Levene variance test: precipitation variability on holiday vs non-holiday days",
+            analysis_question="Is precipitation variability different on holiday versus non-holiday days?",
             hypotheses=[
                 "Null hypothesis: Precipitation variance is the same on holiday and non-holiday days.",
                 "Alternative hypothesis: Precipitation variance differs between the two groups.",
@@ -592,6 +598,7 @@ else:
     with test_col:
         render_test_result(
             title="Spearman correlation: precipitation vs event count",
+            analysis_question="Is precipitation associated with event count?",
             hypotheses=[
                 "Null hypothesis: There is no monotonic association between precipitation and event count.",
                 "Alternative hypothesis: There is a monotonic association between precipitation and event count.",
