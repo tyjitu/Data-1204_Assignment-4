@@ -14,11 +14,11 @@ Does rainy weather have an effect on the occurrence of natural events, such as w
 We created this variable to allow proportion-based tests and to quantify the presence or absence of events on any given day.
 
 ## Null and Alternative Hypotheses
-- **Null hypothesis (H0):** The proportion of days with events is the same for rainy and non-rainy days.  
-- **Alternative hypothesis (H1):** The proportion of days with events is different between rainy and non-rainy days.
+- **Null hypothesis (H0):** `event_day` and `rainy_day` are independent. The occurrence of at least one natural event does not differ between rainy and non-rainy days.  
+- **Alternative hypothesis (H1):** `event_day` and `rainy_day` are associated. The occurrence of at least one natural event differs between rainy and non-rainy days.
 
 ## Suggested Statistical Test
-- **Two-proportion z-test** — because both the outcome and grouping variables are binary, and we want to compare the proportion of event days between two groups (rainy vs. non-rainy).
+- **Chi-square test of independence** — because both `event_day` and `rainy_day` are binary categorical variables, and the goal is to test whether event occurrence is associated with rainy versus non-rainy conditions.
 
 ## Notes on Analysis
 - Other tests we could consider in Part 2 include:

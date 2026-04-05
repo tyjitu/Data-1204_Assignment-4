@@ -1,0 +1,300 @@
+{
+  "source_name": "Nager.Date Public Holidays API",
+  "source_url": "https://date.nager.at",
+  "country_code": "US",
+  "years": [
+    2024,
+    2025
+  ],
+  "fetched_at": "2026-04-04T20:47:52.333038",
+  "offline_fallback_used": true,
+  "holidays": [
+    {
+      "date": "2024-01-01",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-01-15",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-02-19",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-05-27",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-06-19",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-07-04",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-09-02",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-10-14",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-11-11",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-11-28",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2024-12-25",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-01-01",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-01-20",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-02-17",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-05-26",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-06-19",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-07-04",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-09-01",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-10-13",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-11-11",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-11-27",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    },
+    {
+      "date": "2025-12-25",
+      "localName": "US Federal Holiday",
+      "name": "US Federal Holiday",
+      "countryCode": "US",
+      "fixed": false,
+      "global": true,
+      "counties": null,
+      "launchYear": null,
+      "types": [
+        "Public"
+      ]
+    }
+  ],
+  "fallback_reason": "HTTPSConnectionPool(host='date.nager.at', port=443): Max retries exceeded with url: /api/v3/PublicHolidays/2024/US (Caused by NewConnectionError(\"HTTPSConnection(host='date.nager.at', port=443): Failed to establish a new connection: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions\"))"
+}

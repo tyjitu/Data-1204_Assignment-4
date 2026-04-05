@@ -4,19 +4,25 @@ import os
 # --- 1. Load Silver datasets ---
 weather = pd.read_csv("data/silver/open_meteo/daily_weather.csv")
 events = pd.read_csv("data/silver/nasa_eonet/daily_events.csv")
+holidays = pd.read_csv("data/silver/holidays/daily_holidays.csv")
 
 # --- 2. Merge datasets on 'date' ---
 gold = weather.merge(events, on="date", how="outer")
+gold = gold.merge(holidays, on="date", how="left")
 
 # --- 3. Handle missing values ---
 for col in ["temp_max", "temp_min", "precipitation", "event_count", "wildfire_count", "storm_count"]:
     if col in gold.columns:
         gold[col] = gold[col].fillna(0)
 
+gold["holiday_flag"] = gold["holiday_flag"].fillna(0).astype(int)
+gold["holiday_name"] = gold["holiday_name"].fillna("Not a holiday")
+
 # Derived columns
 gold["event_day"] = gold["event_count"].apply(lambda x: 1 if x > 0 else 0)
 gold["rainy_day"] = (gold["precipitation"] > 5).astype(int)  # example threshold: 5 mm
 gold["is_weekend"] = pd.to_datetime(gold["date"]).dt.dayofweek.isin([5,6]).astype(int)
+gold["holiday_or_weekend"] = ((gold["holiday_flag"] == 1) | (gold["is_weekend"] == 1)).astype(int)
 
 # --- 4. Select analysis-ready columns ---
 gold_final = gold[[
@@ -29,7 +35,10 @@ gold_final = gold[[
     "wildfire_count",
     "storm_count",
     "event_day",
-    "is_weekend"
+    "is_weekend",
+    "holiday_flag",
+    "holiday_name",
+    "holiday_or_weekend",
 ]]
 
 # --- 5. Save Gold dataset ---
