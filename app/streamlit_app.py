@@ -98,10 +98,12 @@ def render_test_result(
     extra_lines: list[str] | None = None,
 ) -> None:
     st.subheader(title)
-    st.write(f"Analysis question: {analysis_question}")
+    st.markdown(f"**Analysis question**  \n{analysis_question}")
+    st.caption("Hypotheses")
     for line in hypotheses:
         st.write(line)
     if extra_lines:
+        st.caption("Supporting details")
         for line in extra_lines:
             st.write(line)
     st.write(f"{stat_label}: {stat_value:.3f}" if pd.notna(stat_value) else f"{stat_label}: N/A")
