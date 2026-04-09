@@ -14,6 +14,9 @@ st.set_page_config(
 
 
 DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "gold" / "nasa_weather_gold.csv"
+HOLIDAY_SOURCE_PATH = (
+    Path(__file__).resolve().parents[1] / "data" / "silver" / "holidays" / "daily_holidays.csv"
+)
 
 
 @st.cache_data
@@ -32,6 +35,13 @@ def load_data() -> pd.DataFrame:
     return df.sort_values("date").reset_index(drop=True)
 
 
+@st.cache_data
+def load_holiday_source() -> pd.DataFrame:
+    holiday_df = pd.read_csv(HOLIDAY_SOURCE_PATH)
+    holiday_df["date"] = pd.to_datetime(holiday_df["date"])
+    return holiday_df.sort_values("date").reset_index(drop=True)
+
+
 def fmt_p_value(value: float) -> str:
     if pd.isna(value):
         return "N/A"
@@ -46,6 +56,34 @@ def describe_significance(p_value: float) -> str:
     if p_value < 0.05:
         return "The result is statistically significant at the 0.05 level."
     return "The result is not statistically significant at the 0.05 level."
+
+
+def hypothesis_decision(p_value: float) -> str:
+    if pd.isna(p_value):
+        return "No decision"
+    if p_value < 0.05:
+        return "Reject H0"
+    return "Fail to reject H0"
+
+
+def render_summary_strip(items: list[tuple[str, str]]) -> None:
+    cells = "".join(
+        f"""
+        <div class="summary-cell">
+            <div class="summary-label">{label}</div>
+            <div class="summary-value">{value}</div>
+        </div>
+        """
+        for label, value in items
+    )
+    st.markdown(
+        f"""
+        <div class="summary-strip">
+            {cells}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def safe_spearman(x: pd.Series, y: pd.Series) -> tuple[float, float]:
@@ -95,6 +133,7 @@ def render_test_result(
     p_value: float,
     explanation: str,
     interpretation: str,
+    summary_items: list[tuple[str, str]] | None = None,
     extra_lines: list[str] | None = None,
 ) -> None:
     st.subheader(title)
@@ -102,20 +141,64 @@ def render_test_result(
     st.caption("Hypotheses")
     for line in hypotheses:
         st.write(line)
+    summary_strip_items = []
+    if summary_items:
+        summary_strip_items.extend(summary_items)
+    summary_strip_items.extend(
+        [
+            (stat_label, f"{stat_value:.3f}" if pd.notna(stat_value) else "N/A"),
+            ("p-value", fmt_p_value(p_value)),
+            ("Result", hypothesis_decision(p_value)),
+        ]
+    )
+    st.caption("Supporting details")
+    render_summary_strip(summary_strip_items)
     if extra_lines:
-        st.caption("Supporting details")
         for line in extra_lines:
             st.write(line)
-    st.write(f"{stat_label}: {stat_value:.3f}" if pd.notna(stat_value) else f"{stat_label}: N/A")
-    st.write(f"p-value: {fmt_p_value(p_value)}")
     st.info(explanation)
     st.success(describe_significance(p_value))
     st.write(interpretation)
 
 
 df = load_data()
+holiday_source = load_holiday_source()
 
 st.title("Statistical Analysis of Weather and Natural Events")
+st.markdown(
+    """
+    <style>
+    .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+        padding: 1rem 1.1rem;
+        margin: 0.35rem 0 0.75rem 0;
+        border: 1px solid #7aa98f;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #eff8f1 0%, #e2f1e7 100%);
+    }
+    .summary-cell {
+        text-align: center;
+    }
+    .summary-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #6c8575;
+        margin-bottom: 0.2rem;
+    }
+    .summary-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #245c47;
+        line-height: 1.2;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 st.markdown(
     """
 This Streamlit app continues the Assignment 3 NASA EONET + Open-Meteo project by adding a
@@ -260,6 +343,22 @@ with stats_col:
 
 st.subheader("Column descriptions")
 st.dataframe(column_info, use_container_width=True, hide_index=True)
+
+with st.expander("How the final dataset was prepared"):
+    st.markdown(
+        """
+        1. Open-Meteo JSON was flattened into daily weather rows.
+        2. NASA EONET event geometry timestamps were aggregated into daily counts.
+        3. The holiday source was cleaned into one row per holiday date.
+        4. All three sources were joined on `date`.
+        5. Missing event values were filled with 0, and new flags such as `event_day`, `rainy_day`,
+           `holiday_flag`, and `holiday_or_weekend` were derived for analysis.
+        """
+    )
+    st.caption("Preview of the final prepared dataset")
+    st.dataframe(filtered.head(10), use_container_width=True, hide_index=True)
+    st.caption("Holiday source used during the preparation step")
+    st.dataframe(holiday_source, use_container_width=True, hide_index=True)
 
 st.header("3. Visual Storytelling")
 
@@ -423,6 +522,9 @@ Plain-language interpretation: if the p-value is small, the average day in the f
 sample is not a zero-rainfall day. This does not say anything about events yet, but it helps
 establish that precipitation varies enough to support later comparisons.
 """,
+            summary_items=[
+                ("Observed mean", f"{filtered['precipitation'].mean():.2f} mm"),
+            ],
             extra_lines=[f"Observed mean precipitation: {filtered['precipitation'].mean():.2f} mm"],
         )
 
@@ -461,6 +563,13 @@ Welch's version is used because the groups may have different variances and diff
 Plain-language interpretation: this tells us whether wetter or drier conditions tend to be
 associated with days that contain at least one NASA event in the filtered sample.
 """,
+            summary_items=[
+                ("Event mean", f"{event_precip.mean():.2f} mm" if len(event_precip) else "N/A"),
+                (
+                    "Non-event mean",
+                    f"{non_event_precip.mean():.2f} mm" if len(non_event_precip) else "N/A",
+                ),
+            ],
             extra_lines=[
                 f"Event-day mean precipitation: {event_precip.mean():.2f} mm"
                 if len(event_precip)
@@ -514,6 +623,13 @@ Plain-language interpretation: a small p-value suggests that event-day frequency
 distributed the same way on rainy and non-rainy days. That would still be an association,
 not evidence that rainy weather directly causes events.
 """,
+            summary_items=[
+                ("Degrees of freedom", str(chi_dof)),
+                (
+                    "Min expected count",
+                    f"{expected_df.min().min():.2f}" if not expected_df.empty else "N/A",
+                ),
+            ],
             extra_lines=extra_lines,
         )
         if not expected_df.empty:
@@ -566,6 +682,18 @@ is skewed or not perfectly normal.
 Plain-language interpretation: this checks whether rainfall is similarly stable across
 holiday and non-holiday dates, or whether one group shows more spread and volatility.
 """,
+            summary_items=[
+                (
+                    "Holiday variance",
+                    f"{holiday_precip.var(ddof=1):.2f}" if len(holiday_precip) > 1 else "N/A",
+                ),
+                (
+                    "Non-holiday variance",
+                    f"{non_holiday_precip.var(ddof=1):.2f}"
+                    if len(non_holiday_precip) > 1
+                    else "N/A",
+                ),
+            ],
             extra_lines=[
                 f"Holiday precipitation variance: {holiday_precip.var(ddof=1):.2f}"
                 if len(holiday_precip) > 1
@@ -618,6 +746,7 @@ Plain-language interpretation: this measures whether days with more rainfall als
 have higher or lower event counts. Even a significant correlation does not establish a
 causal mechanism.
 """,
+            summary_items=[],
         )
 
 st.header("5. Reflection and Limitations")
