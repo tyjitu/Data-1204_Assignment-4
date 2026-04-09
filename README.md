@@ -117,7 +117,6 @@ project_root/
 |-- app/
 |   `-- streamlit_app.py
 |
-|-- analysis_preview.md
 `-- README.md
 ```
 
