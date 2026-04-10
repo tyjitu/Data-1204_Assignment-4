@@ -617,27 +617,25 @@ column_info = pd.DataFrame(
     ]
 )
 
-preview_col, stats_col = st.columns([1.4, 1])
-with preview_col:
-    st.subheader("Sample rows")
-    render_styled_table(style_sample_table(filtered.head(10), precision=2))
-with stats_col:
-    st.subheader("Summary statistics")
-    render_styled_table(
-        style_table(
-            filtered[
-                [
-                    "temp_max",
-                    "temp_min",
-                    "precipitation",
-                    "event_count",
-                    "wildfire_count",
-                    "storm_count",
-                ]
-            ].describe(),
-            precision=2,
-        )
+st.subheader("Sample rows")
+render_styled_table(style_sample_table(filtered.head(10), precision=2))
+
+st.subheader("Summary statistics")
+render_styled_table(
+    style_table(
+        filtered[
+            [
+                "temp_max",
+                "temp_min",
+                "precipitation",
+                "event_count",
+                "wildfire_count",
+                "storm_count",
+            ]
+        ].describe(),
+        precision=2,
     )
+)
 
 st.subheader("Column descriptions")
 render_styled_table(style_table(column_info, precision=0, hide_index=True))
@@ -1060,7 +1058,7 @@ variation for a correlation measure to be informative.
             interpretation="""
 Correlation summarizes co-movement, but it cannot show which variable drives the other, and
 it can be influenced by seasonality or other omitted factors.
-""",
+            """,
             summary_items=[],
         )
 
