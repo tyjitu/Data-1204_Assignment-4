@@ -631,6 +631,7 @@ render_styled_table(
                 "event_count",
                 "wildfire_count",
                 "storm_count",
+                "holiday_flag",
             ]
         ].describe(),
         precision=2,
