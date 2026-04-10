@@ -86,6 +86,201 @@ def render_summary_strip(items: list[tuple[str, str]]) -> None:
     )
 
 
+def render_callout_card(kind: str, title: str, body: str) -> None:
+    st.markdown(
+        f"""
+        <div class="callout-card callout-{kind}">
+            <div class="callout-title">{title}</div>
+            <div class="callout-body">{body.strip()}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_section_label(label: str) -> None:
+    st.markdown(f"""<div class="section-label">{label}</div>""", unsafe_allow_html=True)
+
+
+def render_hypotheses_block(hypotheses: list[str]) -> None:
+    items = "".join(f"""<div class="hypothesis-line">{line}</div>""" for line in hypotheses)
+    st.markdown(
+        f"""
+        <div class="hypothesis-block">
+            {items}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_detail_lines(lines: list[str]) -> None:
+    items = "".join(f"""<div class="detail-line">{line}</div>""" for line in lines)
+    st.markdown(
+        f"""
+        <div class="detail-block">
+            {items}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def style_table(
+    df: pd.DataFrame, precision: int = 2, hide_index: bool = False
+) -> "pd.io.formats.style.Styler":
+    styled = (
+        df.style.format(precision=precision, na_rep="N/A")
+        .set_table_styles(
+            [
+                {
+                    "selector": "thead th",
+                    "props": [
+                        ("background-color", "#dcecff"),
+                        ("color", "#355d92"),
+                        ("font-weight", "700"),
+                        ("border", "1px solid #c5dbf7"),
+                        ("text-transform", "uppercase"),
+                        ("font-size", "0.78rem"),
+                        ("letter-spacing", "0.04em"),
+                    ],
+                },
+                {
+                    "selector": "thead th:first-child",
+                    "props": [
+                        ("background-color", "#cde5ff"),
+                        ("color", "#264f7c"),
+                    ],
+                },
+                {
+                    "selector": "tbody td",
+                    "props": [
+                        ("border", "1px solid #d8e6f7"),
+                        ("padding", "0.5rem 0.6rem"),
+                        ("color", "#324b63"),
+                    ],
+                },
+                {
+                    "selector": "tbody tr:nth-child(even)",
+                    "props": [("background-color", "#f7fbff")],
+                },
+                {
+                    "selector": "tbody tr:nth-child(odd)",
+                    "props": [("background-color", "#eef6ff")],
+                },
+                {
+                    "selector": "tbody tr:hover td",
+                    "props": [("background-color", "#e4f0ff")],
+                },
+                {
+                    "selector": "table",
+                    "props": [
+                        ("border-collapse", "collapse"),
+                        ("border", "1px solid #d1e2f7"),
+                        ("border-radius", "10px"),
+                        ("overflow", "hidden"),
+                    ],
+                },
+            ]
+        )
+    )
+    if hide_index:
+        styled = styled.hide(axis="index")
+    return styled
+
+
+def style_sample_table(df: pd.DataFrame, precision: int = 2) -> "pd.io.formats.style.Styler":
+    display_df = df.copy()
+    if "date" in display_df.columns:
+        display_df["date"] = pd.to_datetime(display_df["date"]).dt.strftime("%Y-%m-%d")
+
+    return display_df.style.format(precision=precision, na_rep="N/A").set_table_styles(
+        [
+            {
+                "selector": "thead th",
+                "props": [
+                    ("background-color", "#e8f2ff"),
+                    ("color", "#355d92"),
+                    ("font-weight", "600"),
+                    ("border", "1px solid #c9dbf3"),
+                    ("font-size", "0.8rem"),
+                    ("text-transform", "none"),
+                    ("white-space", "nowrap"),
+                ],
+            },
+            {
+                "selector": "thead th.col_heading.level0.col0",
+                "props": [
+                    ("min-width", "96px"),
+                    ("width", "96px"),
+                    ("background-color", "#dbeafe"),
+                    ("color", "#264f7c"),
+                ],
+            },
+            {
+                "selector": "tbody td, tbody th",
+                "props": [
+                    ("border", "1px solid #d7e5f5"),
+                    ("padding", "0.34rem 0.42rem"),
+                    ("color", "#2f4a68"),
+                    ("font-size", "0.82rem"),
+                    ("background-color", "#ffffff"),
+                    ("white-space", "nowrap"),
+                ],
+            },
+            {
+                "selector": "tbody th",
+                "props": [
+                    ("font-weight", "500"),
+                    ("color", "#66788a"),
+                    ("background-color", "#f4f8fe"),
+                ],
+            },
+            {
+                "selector": "tbody td.col0",
+                "props": [
+                    ("min-width", "96px"),
+                    ("width", "96px"),
+                    ("white-space", "nowrap"),
+                ],
+            },
+            {
+                "selector": "tbody td",
+                "props": [("max-width", "92px")],
+            },
+            {
+                "selector": "tbody tr:nth-child(even) td",
+                "props": [("background-color", "#f9fbff")],
+            },
+            {
+                "selector": "tbody tr:nth-child(odd) td",
+                "props": [("background-color", "#f1f7ff")],
+            },
+            {
+                "selector": "tbody tr:hover td, tbody tr:hover th",
+                "props": [("background-color", "#e3efff")],
+            },
+            {
+                "selector": "table",
+                "props": [
+                    ("border-collapse", "collapse"),
+                    ("border", "1px solid #d2e0f2"),
+                    ("border-radius", "10px"),
+                    ("overflow", "hidden"),
+                    ("width", "auto"),
+                ],
+            },
+        ]
+    )
+
+
+def render_styled_table(styled: "pd.io.formats.style.Styler") -> None:
+    st.markdown(
+        f'<div class="table-wrap">{styled.to_html()}</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def safe_spearman(x: pd.Series, y: pd.Series) -> tuple[float, float]:
     subset = pd.DataFrame({"x": x, "y": y}).dropna()
     if len(subset) < 3 or subset["x"].nunique() < 2 or subset["y"].nunique() < 2:
@@ -132,15 +327,15 @@ def render_test_result(
     stat_value: float,
     p_value: float,
     explanation: str,
+    assumptions: str,
     interpretation: str,
     summary_items: list[tuple[str, str]] | None = None,
     extra_lines: list[str] | None = None,
 ) -> None:
     st.subheader(title)
     st.markdown(f"**Analysis question**  \n{analysis_question}")
-    st.caption("Hypotheses")
-    for line in hypotheses:
-        st.write(line)
+    render_section_label("Hypotheses")
+    render_hypotheses_block(hypotheses)
     summary_strip_items = []
     if summary_items:
         summary_strip_items.extend(summary_items)
@@ -151,20 +346,27 @@ def render_test_result(
             ("Result", hypothesis_decision(p_value)),
         ]
     )
-    st.caption("Supporting details")
+    render_section_label("Supporting Details")
     render_summary_strip(summary_strip_items)
     if extra_lines:
-        for line in extra_lines:
-            st.write(line)
-    st.info(explanation)
+        render_detail_lines(extra_lines)
+    render_callout_card("blue", "Why This Test Fits", explanation)
+    render_callout_card("green", "Assumptions Check", assumptions)
+    render_callout_card("amber", "Plain-Language Caution", interpretation)
     st.success(describe_significance(p_value))
-    st.write(interpretation)
 
 
 df = load_data()
 holiday_source = load_holiday_source()
 
-st.title("Statistical Analysis of Weather and Natural Events")
+st.markdown(
+    """
+    <h1 style="text-align: center; margin-bottom: 0.25rem;">
+        Statistical Analysis of Weather and Natural Events
+    </h1>
+    """,
+    unsafe_allow_html=True,
+)
 st.markdown(
     """
     <style>
@@ -172,11 +374,15 @@ st.markdown(
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 0.75rem;
-        padding: 1rem 1.1rem;
-        margin: 0.35rem 0 0.75rem 0;
-        border: 1px solid #7aa98f;
+        padding: 1rem 1.15rem;
+        margin: 0.3rem 0 0.75rem 0;
+        border-left: 6px solid #39ff14;
+        border-top: 1px solid rgba(36, 54, 71, 0.06);
+        border-right: 1px solid rgba(36, 54, 71, 0.06);
+        border-bottom: 1px solid rgba(36, 54, 71, 0.06);
         border-radius: 12px;
-        background: linear-gradient(180deg, #eff8f1 0%, #e2f1e7 100%);
+        background: linear-gradient(180deg, #eef5ff 0%, #eaf2fc 100%);
+        box-shadow: 0 1px 2px rgba(28, 43, 58, 0.04);
     }
     .summary-cell {
         text-align: center;
@@ -186,14 +392,103 @@ st.markdown(
         font-weight: 600;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #6c8575;
+        color: #7e8b99;
         margin-bottom: 0.2rem;
     }
     .summary-value {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #245c47;
+        color: #254f47;
         line-height: 1.2;
+    }
+    .section-label {
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: #7f8894;
+        margin: 1rem 0 0.45rem 0;
+    }
+    .hypothesis-block, .detail-block {
+        border-radius: 12px;
+        padding: 0.9rem 1rem;
+        margin: 0.2rem 0 0.6rem 0;
+        background: #f7f9fc;
+        border: 1px solid rgba(36, 54, 71, 0.07);
+    }
+    .hypothesis-line, .detail-line {
+        font-size: 1rem;
+        line-height: 1.65;
+        color: #2c3a4a;
+    }
+    .hypothesis-line + .hypothesis-line,
+    .detail-line + .detail-line {
+        margin-top: 0.7rem;
+        padding-top: 0.7rem;
+        border-top: 1px solid rgba(36, 54, 71, 0.06);
+    }
+    .callout-card {
+        border-radius: 12px;
+        padding: 1rem 1.2rem 1.05rem 1.2rem;
+        margin: 0.8rem 0;
+        border-left: 5px solid;
+        border-top: 1px solid rgba(36, 54, 71, 0.06);
+        border-right: 1px solid rgba(36, 54, 71, 0.06);
+        border-bottom: 1px solid rgba(36, 54, 71, 0.06);
+        box-shadow: 0 1px 2px rgba(28, 43, 58, 0.04);
+    }
+    .callout-title {
+        font-size: 0.92rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+    }
+    .callout-body {
+        font-size: 1.02rem;
+        line-height: 1.7;
+        color: #2c3a4a;
+    }
+    .callout-blue {
+        background: linear-gradient(180deg, #e9f1fb 0%, #e3edf9 100%);
+        border-left-color: #4c83d1;
+    }
+    .callout-blue .callout-title {
+        color: #355d92;
+    }
+    .callout-green {
+        background: linear-gradient(180deg, #edf7ef 0%, #e6f1e8 100%);
+        border-left-color: #5ca56d;
+    }
+    .callout-green .callout-title {
+        color: #3f704b;
+    }
+    .callout-amber {
+        background: linear-gradient(180deg, #fcf2e4 0%, #f8ecd9 100%);
+        border-left-color: #d78a27;
+    }
+    .callout-amber .callout-title {
+        color: #8d5f20;
+    }
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0.2rem 0 0.8rem 0;
+        border-radius: 12px;
+    }
+    .table-wrap table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .table-wrap th.col_heading,
+    .table-wrap th.blank,
+    .table-wrap th.index_name {
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
     </style>
     """,
@@ -260,11 +555,14 @@ event days look different from non-event days.
 """
 )
 
-overview_col_1, overview_col_2, overview_col_3, overview_col_4 = st.columns(4)
-overview_col_1.metric("Rows in view", f"{len(filtered):,}")
-overview_col_2.metric("Event days", f"{int(filtered['event_day'].sum()):,}")
-overview_col_3.metric("Holiday days", f"{int(filtered['holiday_flag'].sum()):,}")
-overview_col_4.metric("Mean precipitation", f"{filtered['precipitation'].mean():.2f} mm")
+render_summary_strip(
+    [
+        ("Rows in view", f"{len(filtered):,}"),
+        ("Event days", f"{int(filtered['event_day'].sum()):,}"),
+        ("Holiday days", f"{int(filtered['holiday_flag'].sum()):,}"),
+        ("Mean precipitation", f"{filtered['precipitation'].mean():.2f} mm"),
+    ]
+)
 
 st.header("2. Data Preview")
 
@@ -322,27 +620,27 @@ column_info = pd.DataFrame(
 preview_col, stats_col = st.columns([1.4, 1])
 with preview_col:
     st.subheader("Sample rows")
-    st.dataframe(filtered.head(10), use_container_width=True)
+    render_styled_table(style_sample_table(filtered.head(10), precision=2))
 with stats_col:
     st.subheader("Summary statistics")
-    st.dataframe(
-        filtered[
-            [
-                "temp_max",
-                "temp_min",
-                "precipitation",
-                "event_count",
-                "wildfire_count",
-                "storm_count",
-            ]
-        ]
-        .describe()
-        .round(2),
-        use_container_width=True,
+    render_styled_table(
+        style_table(
+            filtered[
+                [
+                    "temp_max",
+                    "temp_min",
+                    "precipitation",
+                    "event_count",
+                    "wildfire_count",
+                    "storm_count",
+                ]
+            ].describe(),
+            precision=2,
+        )
     )
 
 st.subheader("Column descriptions")
-st.dataframe(column_info, use_container_width=True, hide_index=True)
+render_styled_table(style_table(column_info, precision=0, hide_index=True))
 
 with st.expander("How the final dataset was prepared"):
     st.markdown(
@@ -517,10 +815,13 @@ Why this fits: precipitation is a continuous variable, and the test checks wheth
 differs from a reference value. This is mainly a calibration-style test that shows the data
 has measurable rainfall rather than staying centered at zero.
 """,
+            assumptions="""
+The filtered sample should contain enough observations, and daily rows are treated as
+reasonably independent for this comparison to be meaningful.
+""",
             interpretation="""
-Plain-language interpretation: if the p-value is small, the average day in the filtered
-sample is not a zero-rainfall day. This does not say anything about events yet, but it helps
-establish that precipitation varies enough to support later comparisons.
+This result only tells us whether average precipitation differs from 0 mm in the filtered
+sample. It helps describe the rainfall pattern, but it does not answer the event question by itself.
 """,
             summary_items=[
                 ("Observed mean", f"{filtered['precipitation'].mean():.2f} mm"),
@@ -559,9 +860,13 @@ elif analysis_choice == "Two-sample t-test":
 Why this fits: precipitation is continuous and `event_day` creates two independent groups.
 Welch's version is used because the groups may have different variances and different sizes.
 """,
+            assumptions="""
+The two groups should be reasonably independent, and each group needs enough observations
+for the mean comparison to be stable.
+""",
             interpretation="""
-Plain-language interpretation: this tells us whether wetter or drier conditions tend to be
-associated with days that contain at least one NASA event in the filtered sample.
+This comparison shows whether precipitation differs across event and non-event days, but it
+does not prove that rainfall causes natural events to occur.
 """,
             summary_items=[
                 ("Event mean", f"{event_precip.mean():.2f} mm" if len(event_precip) else "N/A"),
@@ -618,10 +923,13 @@ Why this fits: both variables are categorical, and the question is whether event
 frequency changes across rainy and non-rainy dates. The key assumption is that expected
 cell counts are large enough for the chi-square approximation to be reasonable.
 """,
+            assumptions="""
+Expected cell counts should be large enough in the filtered data, and each date should
+contribute to only one rain-by-event category combination.
+""",
             interpretation="""
-Plain-language interpretation: a small p-value suggests that event-day frequency is not
-distributed the same way on rainy and non-rainy days. That would still be an association,
-not evidence that rainy weather directly causes events.
+Rainy-day status is a broad grouping and does not isolate storm timing, wildfire conditions,
+or reporting differences. A significant result would still show association, not causation.
 """,
             summary_items=[
                 ("Degrees of freedom", str(chi_dof)),
@@ -678,9 +986,13 @@ Why this fits: the assignment asks for a variance comparison, and Levene's test 
 statistically justified choice because it is more robust than the classic F-test when data
 is skewed or not perfectly normal.
 """,
+            assumptions="""
+The holiday and non-holiday groups should be independent enough to compare spread, and each
+group needs enough observations for a meaningful variance estimate.
+""",
             interpretation="""
-Plain-language interpretation: this checks whether rainfall is similarly stable across
-holiday and non-holiday dates, or whether one group shows more spread and volatility.
+Holiday grouping adds context, but it does not isolate the many factors that can affect
+precipitation variability from day to day.
 """,
             summary_items=[
                 (
@@ -741,10 +1053,13 @@ Why this fits: both variables are quantitative, but event counts are discrete an
 follow a linear relationship. Spearman correlation is a safer choice when monotonic
 association matters more than strict linearity.
 """,
+            assumptions="""
+The relationship should be interpretable at the daily level, and the variables need enough
+variation for a correlation measure to be informative.
+""",
             interpretation="""
-Plain-language interpretation: this measures whether days with more rainfall also tend to
-have higher or lower event counts. Even a significant correlation does not establish a
-causal mechanism.
+Correlation summarizes co-movement, but it cannot show which variable drives the other, and
+it can be influenced by seasonality or other omitted factors.
 """,
             summary_items=[],
         )
