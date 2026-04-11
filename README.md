@@ -111,12 +111,16 @@ project_root/
 |   `-- gold_nasa_weather.py
 |
 |-- notebooks/         # Jupyter notebooks for exploration
+|   |-- holidays.ipynb
 |   |-- nasa_eonet.ipynb
 |   `-- open_meteo.ipynb
 |
 |-- app/
 |   `-- streamlit_app.py
 |
+|-- assignment4_analysis_plan.md
+|-- assignment4_reflection.md
+|-- requirements.txt
 `-- README.md
 ```
 
