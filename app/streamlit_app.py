@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import altair as alt
+
+alt.data_transformers.disable_max_rows()
 import pandas as pd
 import streamlit as st
 from scipy import stats
@@ -136,10 +138,10 @@ def style_table(
                 {
                     "selector": "thead th",
                     "props": [
-                        ("background-color", "#dcecff"),
-                        ("color", "#355d92"),
+                        ("background-color", "#18263d"),
+                        ("color", "#d6e7ff"),
                         ("font-weight", "700"),
-                        ("border", "1px solid #c5dbf7"),
+                        ("border", "1px solid #2b3c58"),
                         ("text-transform", "uppercase"),
                         ("font-size", "0.78rem"),
                         ("letter-spacing", "0.04em"),
@@ -148,35 +150,35 @@ def style_table(
                 {
                     "selector": "thead th:first-child",
                     "props": [
-                        ("background-color", "#cde5ff"),
-                        ("color", "#264f7c"),
+                        ("background-color", "#213250"),
+                        ("color", "#f4f8ff"),
                     ],
                 },
                 {
                     "selector": "tbody td",
                     "props": [
-                        ("border", "1px solid #d8e6f7"),
+                        ("border", "1px solid #243348"),
                         ("padding", "0.5rem 0.6rem"),
-                        ("color", "#324b63"),
+                        ("color", "#d9e3f0"),
                     ],
                 },
                 {
                     "selector": "tbody tr:nth-child(even)",
-                    "props": [("background-color", "#f7fbff")],
+                    "props": [("background-color", "#0f1a2b")],
                 },
                 {
                     "selector": "tbody tr:nth-child(odd)",
-                    "props": [("background-color", "#eef6ff")],
+                    "props": [("background-color", "#132033")],
                 },
                 {
                     "selector": "tbody tr:hover td",
-                    "props": [("background-color", "#e4f0ff")],
+                    "props": [("background-color", "#1a2a40")],
                 },
                 {
                     "selector": "table",
                     "props": [
                         ("border-collapse", "collapse"),
-                        ("border", "1px solid #d1e2f7"),
+                        ("border", "1px solid #243348"),
                         ("border-radius", "10px"),
                         ("overflow", "hidden"),
                     ],
@@ -199,10 +201,10 @@ def style_sample_table(df: pd.DataFrame, precision: int = 2) -> "pd.io.formats.s
             {
                 "selector": "thead th",
                 "props": [
-                    ("background-color", "#e8f2ff"),
-                    ("color", "#355d92"),
+                    ("background-color", "#18263d"),
+                    ("color", "#d6e7ff"),
                     ("font-weight", "600"),
-                    ("border", "1px solid #c9dbf3"),
+                    ("border", "1px solid #2b3c58"),
                     ("font-size", "0.8rem"),
                     ("text-transform", "none"),
                     ("white-space", "nowrap"),
@@ -213,18 +215,18 @@ def style_sample_table(df: pd.DataFrame, precision: int = 2) -> "pd.io.formats.s
                 "props": [
                     ("min-width", "96px"),
                     ("width", "96px"),
-                    ("background-color", "#dbeafe"),
-                    ("color", "#264f7c"),
+                    ("background-color", "#213250"),
+                    ("color", "#f4f8ff"),
                 ],
             },
             {
                 "selector": "tbody td, tbody th",
                 "props": [
-                    ("border", "1px solid #d7e5f5"),
+                    ("border", "1px solid #243348"),
                     ("padding", "0.34rem 0.42rem"),
-                    ("color", "#2f4a68"),
+                    ("color", "#d9e3f0"),
                     ("font-size", "0.82rem"),
-                    ("background-color", "#ffffff"),
+                    ("background-color", "#101a2b"),
                     ("white-space", "nowrap"),
                 ],
             },
@@ -232,8 +234,8 @@ def style_sample_table(df: pd.DataFrame, precision: int = 2) -> "pd.io.formats.s
                 "selector": "tbody th",
                 "props": [
                     ("font-weight", "500"),
-                    ("color", "#66788a"),
-                    ("background-color", "#f4f8fe"),
+                    ("color", "#aebed2"),
+                    ("background-color", "#142136"),
                 ],
             },
             {
@@ -250,21 +252,21 @@ def style_sample_table(df: pd.DataFrame, precision: int = 2) -> "pd.io.formats.s
             },
             {
                 "selector": "tbody tr:nth-child(even) td",
-                "props": [("background-color", "#f9fbff")],
+                "props": [("background-color", "#0f1a2b")],
             },
             {
                 "selector": "tbody tr:nth-child(odd) td",
-                "props": [("background-color", "#f1f7ff")],
+                "props": [("background-color", "#132033")],
             },
             {
                 "selector": "tbody tr:hover td, tbody tr:hover th",
-                "props": [("background-color", "#e3efff")],
+                "props": [("background-color", "#1a2a40")],
             },
             {
                 "selector": "table",
                 "props": [
                     ("border-collapse", "collapse"),
-                    ("border", "1px solid #d2e0f2"),
+                    ("border", "1px solid #243348"),
                     ("border-radius", "10px"),
                     ("overflow", "hidden"),
                     ("width", "auto"),
@@ -278,6 +280,50 @@ def render_styled_table(styled: "pd.io.formats.style.Styler") -> None:
     st.markdown(
         f'<div class="table-wrap">{styled.to_html()}</div>',
         unsafe_allow_html=True,
+    )
+
+
+CHART_COLORS = {
+    "blue": "#59d0ff",
+    "blue_soft": "#7bb0ff",
+    "green": "#56e39f",
+    "amber": "#ffbf69",
+    "red": "#ff7a90",
+    "violet": "#b99cff",
+}
+
+
+def style_altair_chart(chart: alt.Chart) -> alt.Chart:
+    return (
+        chart.configure(
+            background="#0b1626",
+            padding={"left": 12, "right": 12, "top": 12, "bottom": 12},
+        )
+        .configure_view(stroke="#22344d", cornerRadius=16)
+        .configure_axis(
+            domainColor="#314863",
+            gridColor="#1f3148",
+            labelColor="#dbe7f5",
+            tickColor="#314863",
+            titleColor="#f3f8ff",
+            titleFontSize=13,
+            labelFontSize=11,
+        )
+        .configure_title(
+            color="#f3f8ff",
+            fontSize=16,
+            anchor="start",
+            offset=12,
+        )
+        .configure_legend(
+            titleColor="#f3f8ff",
+            labelColor="#dbe7f5",
+            orient="top",
+            padding=8,
+            cornerRadius=10,
+            fillColor="#0f1b2d",
+            strokeColor="#22344d",
+        )
     )
 
 
@@ -370,19 +416,106 @@ st.markdown(
 st.markdown(
     """
     <style>
+    :root {
+        --bg-main: #07111f;
+        --bg-surface: rgba(11, 22, 38, 0.88);
+        --bg-surface-strong: #0f1b2d;
+        --bg-surface-soft: #13233a;
+        --border-color: rgba(122, 163, 255, 0.16);
+        --text-main: #ecf3ff;
+        --text-muted: #9cb1c9;
+        --accent-blue: #7bb0ff;
+        --accent-cyan: #59d0ff;
+        --accent-green: #56e39f;
+        --accent-amber: #ffbf69;
+    }
+    .stApp {
+        background:
+            radial-gradient(circle at top left, rgba(89, 208, 255, 0.18), transparent 28%),
+            radial-gradient(circle at top right, rgba(123, 176, 255, 0.16), transparent 24%),
+            linear-gradient(180deg, #07111f 0%, #0a1626 45%, #08111d 100%);
+        color: var(--text-main);
+    }
+    [data-testid="stAppViewContainer"] {
+        background: transparent;
+    }
+    [data-testid="stHeader"] {
+        background: rgba(7, 17, 31, 0.72);
+        backdrop-filter: blur(10px);
+    }
+    [data-testid="stSidebar"] {
+        background:
+            linear-gradient(180deg, rgba(11, 22, 38, 0.97) 0%, rgba(8, 16, 28, 0.96) 100%);
+        border-right: 1px solid var(--border-color);
+    }
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stDateInput,
+    [data-testid="stSidebar"] .stSelectbox {
+        color: var(--text-main);
+    }
+    [data-testid="stSidebar"] > div:first-child {
+        padding-top: 1.2rem;
+    }
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    h1, h2, h3, h4, p, li, label, .stMarkdown, .stCaption {
+        color: var(--text-main);
+    }
+    h1 {
+        color: #f5f9ff;
+        text-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="input"] > div,
+    .stDateInput > div > div {
+        background: rgba(15, 27, 45, 0.95);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+    }
+    div[data-baseweb="select"] input,
+    div[data-baseweb="input"] input {
+        color: var(--text-main) !important;
+    }
+    .stAlert {
+        background: rgba(14, 25, 41, 0.92);
+        border: 1px solid var(--border-color);
+    }
+    .stExpander {
+        background: rgba(11, 22, 38, 0.8);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+    }
+    .stDataFrame, .stTable {
+        border-radius: 14px;
+        overflow: visible;
+    }
+    [data-testid="stDataFrame"],
+    [data-testid="stDataFrameResizable"],
+    [data-testid="stArrowVegaLiteChart"] {
+        overflow: visible !important;
+    }
+    [data-testid="stArrowVegaLiteChart"] + div,
+    .vega-embed,
+    .vega-embed summary {
+        overflow: visible !important;
+    }
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 0.75rem;
         padding: 1rem 1.15rem;
         margin: 0.3rem 0 0.75rem 0;
-        border-left: 6px solid #39ff14;
-        border-top: 1px solid rgba(36, 54, 71, 0.06);
-        border-right: 1px solid rgba(36, 54, 71, 0.06);
-        border-bottom: 1px solid rgba(36, 54, 71, 0.06);
-        border-radius: 12px;
-        background: linear-gradient(180deg, #eef5ff 0%, #eaf2fc 100%);
-        box-shadow: 0 1px 2px rgba(28, 43, 58, 0.04);
+        border-left: 6px solid var(--accent-cyan);
+        border-top: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(15, 27, 45, 0.95) 0%, rgba(10, 20, 35, 0.95) 100%);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(10px);
     }
     .summary-cell {
         text-align: center;
@@ -392,13 +525,13 @@ st.markdown(
         font-weight: 600;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #7e8b99;
+        color: var(--text-muted);
         margin-bottom: 0.2rem;
     }
     .summary-value {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #254f47;
+        color: #f3f8ff;
         line-height: 1.2;
     }
     .section-label {
@@ -406,36 +539,37 @@ st.markdown(
         font-weight: 700;
         letter-spacing: 0.02em;
         text-transform: uppercase;
-        color: #7f8894;
+        color: #b5c8df;
         margin: 1rem 0 0.45rem 0;
     }
     .hypothesis-block, .detail-block {
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 0.9rem 1rem;
         margin: 0.2rem 0 0.6rem 0;
-        background: #f7f9fc;
-        border: 1px solid rgba(36, 54, 71, 0.07);
+        background: linear-gradient(180deg, rgba(12, 24, 40, 0.92) 0%, rgba(9, 18, 31, 0.92) 100%);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
     }
     .hypothesis-line, .detail-line {
         font-size: 1rem;
         line-height: 1.65;
-        color: #2c3a4a;
+        color: #d9e3f0;
     }
     .hypothesis-line + .hypothesis-line,
     .detail-line + .detail-line {
         margin-top: 0.7rem;
         padding-top: 0.7rem;
-        border-top: 1px solid rgba(36, 54, 71, 0.06);
+        border-top: 1px solid rgba(156, 177, 201, 0.16);
     }
     .callout-card {
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 1rem 1.2rem 1.05rem 1.2rem;
         margin: 0.8rem 0;
         border-left: 5px solid;
-        border-top: 1px solid rgba(36, 54, 71, 0.06);
-        border-right: 1px solid rgba(36, 54, 71, 0.06);
-        border-bottom: 1px solid rgba(36, 54, 71, 0.06);
-        box-shadow: 0 1px 2px rgba(28, 43, 58, 0.04);
+        border-top: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2);
     }
     .callout-title {
         font-size: 0.92rem;
@@ -447,40 +581,43 @@ st.markdown(
     .callout-body {
         font-size: 1.02rem;
         line-height: 1.7;
-        color: #2c3a4a;
+        color: #d9e3f0;
     }
     .callout-blue {
-        background: linear-gradient(180deg, #e9f1fb 0%, #e3edf9 100%);
-        border-left-color: #4c83d1;
+        background: linear-gradient(180deg, rgba(19, 40, 68, 0.96) 0%, rgba(12, 28, 47, 0.96) 100%);
+        border-left-color: var(--accent-blue);
     }
     .callout-blue .callout-title {
-        color: #355d92;
+        color: #cfe1ff;
     }
     .callout-green {
-        background: linear-gradient(180deg, #edf7ef 0%, #e6f1e8 100%);
-        border-left-color: #5ca56d;
+        background: linear-gradient(180deg, rgba(16, 46, 40, 0.96) 0%, rgba(10, 31, 27, 0.96) 100%);
+        border-left-color: var(--accent-green);
     }
     .callout-green .callout-title {
-        color: #3f704b;
+        color: #c7f8df;
     }
     .callout-amber {
-        background: linear-gradient(180deg, #fcf2e4 0%, #f8ecd9 100%);
-        border-left-color: #d78a27;
+        background: linear-gradient(180deg, rgba(63, 42, 16, 0.96) 0%, rgba(41, 27, 10, 0.96) 100%);
+        border-left-color: var(--accent-amber);
     }
     .callout-amber .callout-title {
-        color: #8d5f20;
+        color: #ffe0b0;
     }
     .table-wrap {
         width: 100%;
         overflow-x: auto;
         margin: 0.2rem 0 0.8rem 0;
-        border-radius: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        background: rgba(11, 22, 38, 0.78);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
     }
     .table-wrap table {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.92rem;
-        border-radius: 12px;
+        border-radius: 16px;
         overflow: hidden;
     }
     .table-wrap th.col_heading,
@@ -667,15 +804,23 @@ time_series = (
 
 time_chart = (
     alt.Chart(time_series)
-    .mark_line(point=True)
+    .mark_line(point={"filled": True, "size": 70}, strokeWidth=3)
     .encode(
         x=alt.X("date:T", title="Date"),
         y=alt.Y("value:Q", title="Value"),
-        color=alt.Color("metric:N", title="Metric"),
+        color=alt.Color(
+            "metric:N",
+            title="Metric",
+            scale=alt.Scale(
+                domain=["event_count", "precipitation"],
+                range=[CHART_COLORS["blue"], CHART_COLORS["amber"]],
+            ),
+        ),
         tooltip=["date:T", "metric:N", alt.Tooltip("value:Q", format=".2f")],
     )
     .properties(height=320, title="Visual story overview: daily event counts and precipitation over time")
 )
+time_chart = style_altair_chart(time_chart)
 
 boxplot = (
     alt.Chart(filtered)
@@ -683,11 +828,19 @@ boxplot = (
     .encode(
         x=alt.X("event_label:N", title="Event-day group"),
         y=alt.Y("precipitation:Q", title="Precipitation (mm)"),
-        color=alt.Color("event_label:N", legend=None),
+        color=alt.Color(
+            "event_label:N",
+            legend=None,
+            scale=alt.Scale(
+                domain=["No event day", "Event day"],
+                range=[CHART_COLORS["blue_soft"], CHART_COLORS["green"]],
+            ),
+        ),
         tooltip=["event_label:N", alt.Tooltip("precipitation:Q", format=".2f")],
     )
     .properties(height=320, title="Welch two-sample t-test chart: precipitation on event vs non-event days")
 )
+boxplot = style_altair_chart(boxplot)
 
 chi_source = (
     filtered.groupby(["rain_label", "event_label"], as_index=False)
@@ -697,23 +850,38 @@ chi_source = (
 
 bar_chart = (
     alt.Chart(chi_source)
-    .mark_bar()
+    .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
     .encode(
         x=alt.X("rain_label:N", title="Rain group"),
         y=alt.Y("count:Q", title="Number of days"),
-        color=alt.Color("event_label:N", title="Event-day status"),
+        color=alt.Color(
+            "event_label:N",
+            title="Event-day status",
+            scale=alt.Scale(
+                domain=["No event day", "Event day"],
+                range=[CHART_COLORS["violet"], CHART_COLORS["blue"]],
+            ),
+        ),
         tooltip=["rain_label:N", "event_label:N", "count:Q"],
     )
     .properties(height=320, title="Chi-square test chart: rainy-day and event-day counts")
 )
+bar_chart = style_altair_chart(bar_chart)
 
 scatter = (
     alt.Chart(filtered)
-    .mark_circle(size=80, opacity=0.65)
+    .mark_circle(size=90, opacity=0.72)
     .encode(
         x=alt.X("precipitation:Q", title="Precipitation (mm)"),
         y=alt.Y("event_count:Q", title="Event count"),
-        color=alt.Color("holiday_label:N", title="Holiday group"),
+        color=alt.Color(
+            "holiday_label:N",
+            title="Holiday group",
+            scale=alt.Scale(
+                domain=["Non-holiday", "Holiday"],
+                range=[CHART_COLORS["blue_soft"], CHART_COLORS["amber"]],
+            ),
+        ),
         tooltip=[
             "date:T",
             alt.Tooltip("precipitation:Q", format=".2f"),
@@ -723,6 +891,7 @@ scatter = (
     )
     .properties(height=320, title="Spearman correlation chart: precipitation vs event count")
 )
+scatter = style_altair_chart(scatter)
 
 chart_col_1, chart_col_2 = st.columns(2)
 chart_col_1.altair_chart(time_chart, use_container_width=True)
@@ -785,48 +954,53 @@ if analysis_choice == "One-sample t-test":
 
     one_sample_chart = (
         alt.Chart(one_sample_chart_data)
-        .mark_bar()
+        .mark_bar(cornerRadiusTopLeft=8, cornerRadiusTopRight=8)
         .encode(
             x=alt.X("group:N", title=None),
             y=alt.Y("value:Q", title="Precipitation (mm)"),
-            color=alt.Color("group:N", legend=None),
+            color=alt.Color(
+                "group:N",
+                legend=None,
+                scale=alt.Scale(
+                    domain=["Observed mean", "Reference value"],
+                    range=[CHART_COLORS["blue"], CHART_COLORS["violet"]],
+                ),
+            ),
             tooltip=["group:N", alt.Tooltip("value:Q", format=".2f")],
         )
         .properties(height=320, title="One-sample t-test chart: observed mean precipitation vs 0 mm")
     )
+    one_sample_chart = style_altair_chart(one_sample_chart)
 
-    chart_col, test_col = st.columns(2)
-    with chart_col:
-        st.altair_chart(one_sample_chart, use_container_width=True)
-    with test_col:
-        render_test_result(
-            title="One-sample t-test: mean precipitation vs 0 mm",
-            analysis_question="Is the mean daily precipitation in the filtered sample different from 0 mm?",
-            hypotheses=[
-                "Null hypothesis: The mean daily precipitation is 0 mm.",
-                "Alternative hypothesis: The mean daily precipitation is different from 0 mm.",
-            ],
-            stat_label="t-statistic",
-            stat_value=one_sample_stat,
-            p_value=one_sample_p,
-            explanation="""
+    st.altair_chart(one_sample_chart, use_container_width=True)
+    render_test_result(
+        title="One-sample t-test: mean precipitation vs 0 mm",
+        analysis_question="Is the mean daily precipitation in the filtered sample different from 0 mm?",
+        hypotheses=[
+            "Null hypothesis: The mean daily precipitation is 0 mm.",
+            "Alternative hypothesis: The mean daily precipitation is different from 0 mm.",
+        ],
+        stat_label="t-statistic",
+        stat_value=one_sample_stat,
+        p_value=one_sample_p,
+        explanation="""
 Why this fits: precipitation is a continuous variable, and the test checks whether its mean
 differs from a reference value. This is mainly a calibration-style test that shows the data
 has measurable rainfall rather than staying centered at zero.
 """,
-            assumptions="""
+        assumptions="""
 The filtered sample should contain enough observations, and daily rows are treated as
 reasonably independent for this comparison to be meaningful.
 """,
-            interpretation="""
+        interpretation="""
 This result only tells us whether average precipitation differs from 0 mm in the filtered
 sample. It helps describe the rainfall pattern, but it does not answer the event question by itself.
 """,
-            summary_items=[
-                ("Observed mean", f"{filtered['precipitation'].mean():.2f} mm"),
-            ],
-            extra_lines=[f"Observed mean precipitation: {filtered['precipitation'].mean():.2f} mm"],
-        )
+        summary_items=[
+            ("Observed mean", f"{filtered['precipitation'].mean():.2f} mm"),
+        ],
+        extra_lines=[f"Observed mean precipitation: {filtered['precipitation'].mean():.2f} mm"],
+    )
 
 elif analysis_choice == "Two-sample t-test":
     two_sample_chart = (
@@ -835,113 +1009,123 @@ elif analysis_choice == "Two-sample t-test":
         .encode(
             x=alt.X("event_label:N", title="Event-day group"),
             y=alt.Y("precipitation:Q", title="Precipitation (mm)"),
-            color=alt.Color("event_label:N", legend=None),
+            color=alt.Color(
+                "event_label:N",
+                legend=None,
+                scale=alt.Scale(
+                    domain=["No event day", "Event day"],
+                    range=[CHART_COLORS["blue_soft"], CHART_COLORS["green"]],
+                ),
+            ),
             tooltip=["event_label:N", alt.Tooltip("precipitation:Q", format=".2f")],
         )
         .properties(height=320, title="Welch two-sample t-test chart: precipitation on event vs non-event days")
     )
+    two_sample_chart = style_altair_chart(two_sample_chart)
 
-    chart_col, test_col = st.columns(2)
-    with chart_col:
-        st.altair_chart(two_sample_chart, use_container_width=True)
-    with test_col:
-        render_test_result(
-            title="Welch two-sample t-test: precipitation on event vs non-event days",
-            analysis_question="Does mean precipitation differ between event days and non-event days?",
-            hypotheses=[
-                "Null hypothesis: Mean precipitation is the same on event days and non-event days.",
-                "Alternative hypothesis: Mean precipitation differs between event days and non-event days.",
-            ],
-            stat_label="t-statistic",
-            stat_value=two_sample_stat,
-            p_value=two_sample_p,
-            explanation="""
+    st.altair_chart(two_sample_chart, use_container_width=True)
+    render_test_result(
+        title="Welch two-sample t-test: precipitation on event vs non-event days",
+        analysis_question="Does mean precipitation differ between event days and non-event days?",
+        hypotheses=[
+            "Null hypothesis: Mean precipitation is the same on event days and non-event days.",
+            "Alternative hypothesis: Mean precipitation differs between event days and non-event days.",
+        ],
+        stat_label="t-statistic",
+        stat_value=two_sample_stat,
+        p_value=two_sample_p,
+        explanation="""
 Why this fits: precipitation is continuous and `event_day` creates two independent groups.
 Welch's version is used because the groups may have different variances and different sizes.
 """,
-            assumptions="""
+        assumptions="""
 The two groups should be reasonably independent, and each group needs enough observations
 for the mean comparison to be stable.
 """,
-            interpretation="""
+        interpretation="""
 This comparison shows whether precipitation differs across event and non-event days, but it
 does not prove that rainfall causes natural events to occur.
 """,
-            summary_items=[
-                ("Event mean", f"{event_precip.mean():.2f} mm" if len(event_precip) else "N/A"),
-                (
-                    "Non-event mean",
-                    f"{non_event_precip.mean():.2f} mm" if len(non_event_precip) else "N/A",
-                ),
-            ],
-            extra_lines=[
-                f"Event-day mean precipitation: {event_precip.mean():.2f} mm"
-                if len(event_precip)
-                else "Event-day mean precipitation: N/A",
-                f"Non-event-day mean precipitation: {non_event_precip.mean():.2f} mm"
-                if len(non_event_precip)
-                else "Non-event-day mean precipitation: N/A",
-            ],
-        )
+        summary_items=[
+            ("Event mean", f"{event_precip.mean():.2f} mm" if len(event_precip) else "N/A"),
+            (
+                "Non-event mean",
+                f"{non_event_precip.mean():.2f} mm" if len(non_event_precip) else "N/A",
+            ),
+        ],
+        extra_lines=[
+            f"Event-day mean precipitation: {event_precip.mean():.2f} mm"
+            if len(event_precip)
+            else "Event-day mean precipitation: N/A",
+            f"Non-event-day mean precipitation: {non_event_precip.mean():.2f} mm"
+            if len(non_event_precip)
+            else "Non-event-day mean precipitation: N/A",
+        ],
+    )
 
 elif analysis_choice == "Chi-square test of independence":
     chi_chart = (
         alt.Chart(chi_source)
-        .mark_bar()
+        .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
         .encode(
             x=alt.X("rain_label:N", title="Rain group"),
             y=alt.Y("count:Q", title="Number of days"),
-            color=alt.Color("event_label:N", title="Event-day status"),
+            color=alt.Color(
+                "event_label:N",
+                title="Event-day status",
+                scale=alt.Scale(
+                    domain=["No event day", "Event day"],
+                    range=[CHART_COLORS["violet"], CHART_COLORS["blue"]],
+                ),
+            ),
             tooltip=["rain_label:N", "event_label:N", "count:Q"],
         )
         .properties(height=320, title="Chi-square test chart: observed rainy-day and event-day counts")
     )
+    chi_chart = style_altair_chart(chi_chart)
 
-    chart_col, test_col = st.columns(2)
-    with chart_col:
-        st.altair_chart(chi_chart, use_container_width=True)
-        st.dataframe(chi_table, use_container_width=True)
-    with test_col:
-        extra_lines = [f"Degrees of freedom: {chi_dof}"]
-        if not expected_df.empty:
-            extra_lines.append(
-                f"Minimum expected cell count: {expected_df.min().min():.2f}"
-            )
-        render_test_result(
-            title="Chi-square test: event day vs rainy-day status",
-            analysis_question="Is the occurrence of a natural event associated with whether a day is rainy?",
-            hypotheses=[
-                "Null hypothesis: `event_day` is independent of `rainy_day`.",
-                "Alternative hypothesis: `event_day` and `rainy_day` are associated.",
-            ],
-            stat_label="Chi-square statistic",
-            stat_value=chi_stat,
-            p_value=chi_p,
-            explanation="""
+    st.altair_chart(chi_chart, use_container_width=True)
+    st.dataframe(chi_table, use_container_width=True)
+    extra_lines = [f"Degrees of freedom: {chi_dof}"]
+    if not expected_df.empty:
+        extra_lines.append(
+            f"Minimum expected cell count: {expected_df.min().min():.2f}"
+        )
+    render_test_result(
+        title="Chi-square test: event day vs rainy-day status",
+        analysis_question="Is the occurrence of a natural event associated with whether a day is rainy?",
+        hypotheses=[
+            "Null hypothesis: `event_day` is independent of `rainy_day`.",
+            "Alternative hypothesis: `event_day` and `rainy_day` are associated.",
+        ],
+        stat_label="Chi-square statistic",
+        stat_value=chi_stat,
+        p_value=chi_p,
+        explanation="""
 Why this fits: both variables are categorical, and the question is whether event-day
 frequency changes across rainy and non-rainy dates. The key assumption is that expected
 cell counts are large enough for the chi-square approximation to be reasonable.
 """,
-            assumptions="""
+        assumptions="""
 Expected cell counts should be large enough in the filtered data, and each date should
 contribute to only one rain-by-event category combination.
 """,
-            interpretation="""
+        interpretation="""
 Rainy-day status is a broad grouping and does not isolate storm timing, wildfire conditions,
 or reporting differences. A significant result would still show association, not causation.
 """,
-            summary_items=[
-                ("Degrees of freedom", str(chi_dof)),
-                (
-                    "Min expected count",
-                    f"{expected_df.min().min():.2f}" if not expected_df.empty else "N/A",
-                ),
-            ],
-            extra_lines=extra_lines,
-        )
-        if not expected_df.empty:
-            st.caption("Expected counts under the null hypothesis")
-            st.dataframe(expected_df.round(2), use_container_width=True)
+        summary_items=[
+            ("Degrees of freedom", str(chi_dof)),
+            (
+                "Min expected count",
+                f"{expected_df.min().min():.2f}" if not expected_df.empty else "N/A",
+            ),
+        ],
+        extra_lines=extra_lines,
+    )
+    if not expected_df.empty:
+        st.caption("Expected counts under the null hypothesis")
+        st.dataframe(expected_df.round(2), use_container_width=True)
 
 elif analysis_choice == "Variance comparison":
     variance_chart_data = pd.DataFrame(
@@ -956,73 +1140,85 @@ elif analysis_choice == "Variance comparison":
 
     variance_chart = (
         alt.Chart(variance_chart_data)
-        .mark_bar()
+        .mark_bar(cornerRadiusTopLeft=8, cornerRadiusTopRight=8)
         .encode(
             x=alt.X("group:N", title="Group"),
             y=alt.Y("variance:Q", title="Sample variance"),
-            color=alt.Color("group:N", legend=None),
+            color=alt.Color(
+                "group:N",
+                legend=None,
+                scale=alt.Scale(
+                    domain=["Holiday", "Non-holiday"],
+                    range=[CHART_COLORS["amber"], CHART_COLORS["blue_soft"]],
+                ),
+            ),
             tooltip=["group:N", alt.Tooltip("variance:Q", format=".2f")],
         )
         .properties(height=320, title="Variance comparison chart: precipitation variance by holiday status")
     )
+    variance_chart = style_altair_chart(variance_chart)
 
-    chart_col, test_col = st.columns(2)
-    with chart_col:
-        st.altair_chart(variance_chart, use_container_width=True)
-    with test_col:
-        render_test_result(
-            title="Levene variance test: precipitation variability on holiday vs non-holiday days",
-            analysis_question="Is precipitation variability different on holiday versus non-holiday days?",
-            hypotheses=[
-                "Null hypothesis: Precipitation variance is the same on holiday and non-holiday days.",
-                "Alternative hypothesis: Precipitation variance differs between the two groups.",
-            ],
-            stat_label="Levene statistic",
-            stat_value=levene_stat,
-            p_value=levene_p,
-            explanation="""
+    st.altair_chart(variance_chart, use_container_width=True)
+    render_test_result(
+        title="Levene variance test: precipitation variability on holiday vs non-holiday days",
+        analysis_question="Is precipitation variability different on holiday versus non-holiday days?",
+        hypotheses=[
+            "Null hypothesis: Precipitation variance is the same on holiday and non-holiday days.",
+            "Alternative hypothesis: Precipitation variance differs between the two groups.",
+        ],
+        stat_label="Levene statistic",
+        stat_value=levene_stat,
+        p_value=levene_p,
+        explanation="""
 Why this fits: the assignment asks for a variance comparison, and Levene's test is a
 statistically justified choice because it is more robust than the classic F-test when data
 is skewed or not perfectly normal.
 """,
-            assumptions="""
+        assumptions="""
 The holiday and non-holiday groups should be independent enough to compare spread, and each
 group needs enough observations for a meaningful variance estimate.
 """,
-            interpretation="""
+        interpretation="""
 Holiday grouping adds context, but it does not isolate the many factors that can affect
 precipitation variability from day to day.
 """,
-            summary_items=[
-                (
-                    "Holiday variance",
-                    f"{holiday_precip.var(ddof=1):.2f}" if len(holiday_precip) > 1 else "N/A",
-                ),
-                (
-                    "Non-holiday variance",
-                    f"{non_holiday_precip.var(ddof=1):.2f}"
-                    if len(non_holiday_precip) > 1
-                    else "N/A",
-                ),
-            ],
-            extra_lines=[
-                f"Holiday precipitation variance: {holiday_precip.var(ddof=1):.2f}"
-                if len(holiday_precip) > 1
-                else "Holiday precipitation variance: N/A",
-                f"Non-holiday precipitation variance: {non_holiday_precip.var(ddof=1):.2f}"
+        summary_items=[
+            (
+                "Holiday variance",
+                f"{holiday_precip.var(ddof=1):.2f}" if len(holiday_precip) > 1 else "N/A",
+            ),
+            (
+                "Non-holiday variance",
+                f"{non_holiday_precip.var(ddof=1):.2f}"
                 if len(non_holiday_precip) > 1
-                else "Non-holiday precipitation variance: N/A",
-            ],
-        )
+                else "N/A",
+            ),
+        ],
+        extra_lines=[
+            f"Holiday precipitation variance: {holiday_precip.var(ddof=1):.2f}"
+            if len(holiday_precip) > 1
+            else "Holiday precipitation variance: N/A",
+            f"Non-holiday precipitation variance: {non_holiday_precip.var(ddof=1):.2f}"
+            if len(non_holiday_precip) > 1
+            else "Non-holiday precipitation variance: N/A",
+        ],
+    )
 
 else:
     corr_chart = (
         alt.Chart(filtered)
-        .mark_circle(size=80, opacity=0.65)
+        .mark_circle(size=90, opacity=0.72)
         .encode(
             x=alt.X("precipitation:Q", title="Precipitation (mm)"),
             y=alt.Y("event_count:Q", title="Event count"),
-            color=alt.Color("holiday_label:N", title="Holiday group"),
+            color=alt.Color(
+                "holiday_label:N",
+                title="Holiday group",
+                scale=alt.Scale(
+                    domain=["Non-holiday", "Holiday"],
+                    range=[CHART_COLORS["blue_soft"], CHART_COLORS["amber"]],
+                ),
+            ),
             tooltip=[
                 "date:T",
                 alt.Tooltip("precipitation:Q", format=".2f"),
@@ -1032,36 +1228,34 @@ else:
         )
         .properties(height=320, title="Spearman correlation chart: precipitation and event-count relationship")
     )
+    corr_chart = style_altair_chart(corr_chart)
 
-    chart_col, test_col = st.columns(2)
-    with chart_col:
-        st.altair_chart(corr_chart, use_container_width=True)
-    with test_col:
-        render_test_result(
-            title="Spearman correlation: precipitation vs event count",
-            analysis_question="Is precipitation associated with event count?",
-            hypotheses=[
-                "Null hypothesis: There is no monotonic association between precipitation and event count.",
-                "Alternative hypothesis: There is a monotonic association between precipitation and event count.",
-            ],
-            stat_label="Spearman rho",
-            stat_value=spearman_r,
-            p_value=spearman_p,
-            explanation="""
+    st.altair_chart(corr_chart, use_container_width=True)
+    render_test_result(
+        title="Spearman correlation: precipitation vs event count",
+        analysis_question="Is precipitation associated with event count?",
+        hypotheses=[
+            "Null hypothesis: There is no monotonic association between precipitation and event count.",
+            "Alternative hypothesis: There is a monotonic association between precipitation and event count.",
+        ],
+        stat_label="Spearman rho",
+        stat_value=spearman_r,
+        p_value=spearman_p,
+        explanation="""
 Why this fits: both variables are quantitative, but event counts are discrete and may not
 follow a linear relationship. Spearman correlation is a safer choice when monotonic
 association matters more than strict linearity.
 """,
-            assumptions="""
+        assumptions="""
 The relationship should be interpretable at the daily level, and the variables need enough
 variation for a correlation measure to be informative.
 """,
-            interpretation="""
+        interpretation="""
 Correlation summarizes co-movement, but it cannot show which variable drives the other, and
 it can be influenced by seasonality or other omitted factors.
-            """,
-            summary_items=[],
-        )
+""",
+        summary_items=[],
+    )
 
 st.header("5. Reflection and Limitations")
 st.markdown(
